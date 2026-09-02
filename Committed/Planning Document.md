@@ -1,6 +1,8 @@
 Pretesting Planning Document
+
 TryHackMe – Committed
 Room: Committed
+Access Link: https://tryhackme.com/room/committed
 Platform: TryHackMe
 Category: Git / Source Code Analysis / Information Disclosure
 Testing Type: Authorized CTF/Lab Environment
@@ -76,14 +78,14 @@ cd /home/ubuntu/commited
 
 Confirm the location:
 
-pwd
+`pwd`
 
 List the contents:
 
-ls -la  
+`ls -la`  
 
 4.2. Determine Whether It Is a Git Repository
-git status
+`git status`
 
 Expected information may include:
 
@@ -94,18 +96,18 @@ Untracked files
 
 Also inspect:
 
-ls -la .git
+`ls -la .git`
 
 5. Repository Enumeration
 
 After confirming that the directory is a Git repository, enumerate its basic structure.
 
 5.1 Identify Branches
-git branch
+`git branch`
 
 Check all local and remote branches:
 
-git branch -a
+`git branch -a`
 
 Branches are important because sensitive information may have been committed to a branch that is no longer the active branch.
 
@@ -113,11 +115,11 @@ Branches are important because sensitive information may have been committed to 
 
 Start with a compact history:
 
-git log --oneline
+`git log --oneline`
 
 Then inspect the complete history:
 
-git log --all --oneline --decorate --graph
+`git log --all --oneline --decorate --graph`
 
 The --all option is particularly important because it allows commits reachable from other references/branches to be examined.
 
@@ -125,11 +127,11 @@ The --all option is particularly important because it allows commits reachable f
 
 For suspicious commits:
 
-git show <commit>
+`git show <commit>`
 
 Alternatively:
 
-git show --stat <commit>
+`git show --stat <commit>`
 
 This can reveal:
 
@@ -148,7 +150,7 @@ Sensitive information may have been removed from the current version but still e
 Therefore, current files alone should not be considered sufficient.
 
 6.1 Search Commit History
-git log --all --oneline --stat
+`git log --all --oneline --stat`
 
 Look for commits involving:
 
@@ -179,15 +181,15 @@ Deleted files can remain recoverable through Git history.
 
 Identify deleted files:
 
-git log --all --diff-filter=D --summary
+`git log --all --diff-filter=D --summary`
 
 For a suspicious deleted file:
 
-git log --all -- <filename>
+`git log --all -- <filename>`
 
 Then inspect its previous version:
 
-git show <commit>:<filename>
+`git show <commit>:<filename>`
 
 This is an important phase because a developer may have deleted the sensitive file after realizing it was committed.
 
@@ -211,7 +213,7 @@ THM
 
 A basic working-tree search:
 
-grep -RniE 'password|passwd|secret|token|api[_-]?key|credential|flag' .
+`grep -RniE 'password|passwd|secret|token|api[_-]?key|credential|flag' .`
 
 However, this may not find information that has already been removed.
 
@@ -223,11 +225,11 @@ If normal history inspection does not reveal the sensitive information, investig
 
 Inspect repository references:
 
-git show-ref
+`git show-ref`
 
 Inspect unreachable objects:
 
-git fsck --full --no-reflogs
+`git fsck --full --no-reflogs`
 
 Potentially interesting output may include:
 
@@ -241,7 +243,7 @@ A dangling object can contain historical data that is no longer reachable throug
 
 If a dangling commit is discovered:
 
-git show <commit>
+`git show <commit>`
 
 Review its:
 
@@ -253,7 +255,7 @@ Added/deleted content
 
 For a suspicious blob:
 
-git cat-file -p <blob_hash>
+`git cat-file -p <blob_hash>`
 
 The output should be examined for sensitive information.
 
@@ -261,7 +263,7 @@ The output should be examined for sensitive information.
 
 Construct a basic timeline of repository activity.
 
-git log --all --format='%h | %ad | %an | %s' --date=iso
+`git log --all --format='%h | %ad | %an | %s' --date=iso`
 
 Pay particular attention to:
 
@@ -359,6 +361,7 @@ less	Large-output inspection
 git fsck	Identify unreachable Git objects
 git cat-file	Inspect raw Git objects
 Core Git Commands
+```bash
 git status
 git branch -a
 git log --all --oneline --decorate --graph
@@ -368,6 +371,7 @@ git log --all --diff-filter=D
 git show-ref
 git fsck --full --no-reflogs
 git cat-file -p
+```
 
 15. Expected Findings
 
