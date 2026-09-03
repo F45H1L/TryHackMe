@@ -1,0 +1,130 @@
+# Test Plan — TryHackMe: Confidential
+Link: https://tryhackme.com/room/confidential?vccr=1
+## 1. Objective
+
+The objective of this test is to recover the secret invite code/flag contained within a QR code embedded in the confidential PDF provided by the challenge.
+
+## 2. Scope
+
+**Target file location:**
+
+```text
+/home/ubuntu/confidential
+```
+
+The investigation will be performed entirely within the TryHackMe AttackBox.
+
+## 3. Test Methodology
+
+### Step 1 — Navigate to the Challenge Directory
+
+Navigate to the directory containing the confidential file:
+
+```bash
+cd /home/ubuntu/confidential
+```
+
+### Step 2 — Identify the Files
+
+List the contents of the current directory:
+
+```bash
+ls -lah
+```
+
+This confirms the filename and allows the available files to be identified before analysis.
+
+### Step 3 — Inspect Images Embedded in the PDF
+
+Use `pdfimages` to determine whether the PDF contains embedded images:
+
+```bash
+pdfimages -list <PDF_FILE>
+```
+
+This will provide information about the images contained within the PDF.
+
+### Step 4 — Create an Extraction Directory
+
+Create a directory to store the extracted images:
+
+```bash
+mkdir /pdf_extract
+```
+
+If necessary, use:
+
+```bash
+mkdir -p /pdf_extract
+```
+
+### Step 5 — Extract Images from the PDF
+
+Extract the images contained within the PDF:
+
+```bash
+pdfimages -all <PDF_FILE> /pdf_extract/image
+```
+
+The extracted images will be stored in:
+
+```text
+/pdf_extract/
+```
+
+### Step 6 — Inspect the Extracted Images
+
+Open the AttackBox's file manager and navigate to:
+
+```text
+/pdf_extract
+```
+
+Review the extracted images using the available image viewer.
+
+The objective is to identify the QR code that contains the secret invite code.
+
+### Step 7 — Decode the QR Code
+
+Once the QR code has been identified, scan it using a QR-code reader.
+
+The decoded value should contain the challenge's flag/invite code.
+
+## 4. Expected Result
+
+The expected result is successful extraction and decoding of the QR code, revealing the secret flag.
+
+```text
+PDF
+ ↓
+Embedded Images
+ ↓
+Extracted QR Code
+ ↓
+QR Scanner
+ ↓
+Flag
+```
+
+## 5. Tools Used
+
+* Linux terminal
+* `ls`
+* `pdfimages`
+* AttackBox file manager
+* Image viewer
+* QR-code scanner
+
+## 6. Evidence to Record
+
+During testing, record:
+
+* Original PDF filename
+* `pdfimages -list` output
+* Extracted image filenames
+* Screenshot of the relevant extracted QR image
+* Decoded flag
+
+## 7. Conclusion
+
+The test will be considered successful when the QR code embedded within the confidential PDF has been recovered and decoded, resulting in the challenge flag.
