@@ -7,14 +7,14 @@
 * [1. Add Target to `/etc/hosts`](#1-add-target-to-etchosts)
 * [2. Scan the Target](#2-scan-the-target)
 * [3. Enumerate the Web Servers](#3-enumerate-the-web-servers)
-* [4. Register an Account](#4-register-an-account)
-* [5. Start an HTTP Listener](#5-start-an-http-listener)
+* [4. Start an HTTP Listener](#4-start-an-http-listener)
+* [5. Register an Account](#5-register-an-account)
 * [6. Configure `login.worldwap.thm`](#6-configure-loginworldwapthm)
 * [7. Enumerate the Login Application](#7-enumerate-the-login-application)
 * [8. Investigate Session Handling](#8-investigate-session-handling)
 * [9. Investigate Password Change](#9-investigate-password-change)
 * [10. Test CSRF](#10-test-csrf)
-* [15. Attack Path Summary](#15-attack-path-summary)
+* [11. Attack Path Summary](#11-attack-path-summary)
 
 ---
 
@@ -96,7 +96,7 @@ Serving HTTP on 0.0.0.0 port 8000
 ```
 
 ---
-# 6. Test XSS
+# 5. Test XSS
 
 Find the IP address assigned to the TryHackMe VPN interface:
 
@@ -167,14 +167,6 @@ gobuster dir \
 -u http://login.worldwap.thm/ \
 -w /usr/share/wordlists/dirb/common.txt \
 -x php,html,txt,js,bak,old
-```
-
-Alternatively, use FFUF:
-
-```bash
-ffuf -u http://login.worldwap.thm/FUZZ \
--w /usr/share/wordlists/dirb/common.txt \
--e .php,.html,.txt,.js,.bak,.old
 ```
 
 The important endpoint discovered during enumeration is:
@@ -301,7 +293,7 @@ Action executed!
 After execution, verify whether the password was actually changed.
 
 ---
-## 11. Login as Admin
+# 11. Login as Admin
 
 On another private window open:
 ```text
